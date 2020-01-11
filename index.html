@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>Riddler 20200111 - Classic</title>
+    </head>
+    <body>
+        <div id="largest"></div>
+        <div id="output"></div>
+        <script>
+            // https://codegolf.stackexchange.com/a/12772
+            function N(s,z) {
+                return O = "zero,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thir,,fif,,,eigh,,,,twen,,for".split(","),
+                (z? O[s] || O[s-10] || O[s-20]
+                : s < 13?  N(s,1)
+                : s < 20?  N(s,1) + "teen"
+                : s < 100? N(a=20+(s/10|0),1) + "ty" + (s%10?" "+N(s%10):"")
+                : s < 1e3? N(s/100|0)  + " hundred"  + (s%100?" "+N(s%100):"")
+                : s < 1e5? N(s/1e3|0)  + " thousand" + (s%1e3?" "+N(s%1e3):"") : 0) || NaN
+            }
+
+            function gematria(str) {
+                let gematriavalue = 0;
+                for (let i=0; i<str.length; i++) {
+                    gematriavalue += str.charCodeAt(i) - 'a'.charCodeAt(0) + 1
+                }
+                return gematriavalue;
+            }
+
+            function main() {
+                var largest = ""
+                var output = ""
+
+                for (let i=0; i < 100000; i++) {
+                    let spellout = N(i);
+                    let gemvalue = gematria(spellout.split(' ').join(''));
+                    if (i < gemvalue) largest = i;
+                    output += i + " " + gemvalue + " " + spellout + "\n";
+                }
+                document.getElementById("largest").innerText = "Largest: " + largest;
+                document.getElementById("output").innerText = "All output:\n" + output;
+            }
+
+            main();
+
+        </script>
+    </body>
+</html>
